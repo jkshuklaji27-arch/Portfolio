@@ -8,8 +8,35 @@ if (hamburger && navLinks) {
     });
 }
 
+// ===== CERTIFICATE IMAGE PREVIEW =====
+const certificateDialog = document.querySelector('.certificate-lightbox');
+
+if (certificateDialog instanceof HTMLDialogElement) {
+    const previewImage = certificateDialog.querySelector('img');
+    const closePreviewButton = certificateDialog.querySelector('.certificate-lightbox-close');
+
+    document.querySelectorAll('.portfolio-image-link').forEach(link => {
+        link.addEventListener('click', event => {
+            if (!previewImage) return;
+
+            event.preventDefault();
+            const certificateImage = link.querySelector('img');
+            if (!certificateImage) return;
+
+            previewImage.src = link.href;
+            previewImage.alt = certificateImage.alt;
+            certificateDialog.showModal();
+        });
+    });
+
+    closePreviewButton?.addEventListener('click', () => certificateDialog.close());
+    certificateDialog.addEventListener('click', event => {
+        if (event.target === certificateDialog) certificateDialog.close();
+    });
+}
+
 // ===== SCROLL REVEAL (Intersection Observer) =====
-const revealElements = document.querySelectorAll('.service-card, .stat-item, .resume-item, .portfolio-item, .about-content, .contact-info, .contact-form');
+const revealElements = document.querySelectorAll('.service-card, .stat-item, .resume-item, .portfolio-item, .about-content, .contact-info, .contact-options');
 
 const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -53,7 +80,7 @@ const observerCallback = (entries) => {
     });
 };
 const observer = new IntersectionObserver(observerCallback, { threshold: 0.15 });
-document.querySelectorAll('.service-card, .stat-item, .resume-item, .portfolio-item, .about-content, .contact-info, .contact-form').forEach(el => {
+document.querySelectorAll('.service-card, .stat-item, .resume-item, .portfolio-item, .about-content, .contact-info, .contact-options').forEach(el => {
     observer.observe(el);
 });
 
